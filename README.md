@@ -33,7 +33,7 @@ For separate devices, connect to the same trusted Wi-Fi. On Windows, set `$env:H
 
 ## Stack and verification
 
-Python 3.12, aiohttp, Pillow, SQLite, HTML, CSS and JavaScript. Run the nine automated tests with `.\.venv\Scripts\python.exe -m unittest -v` on Windows or `.venv/bin/python -m unittest -v` on Linux/macOS. All nine passed during development. The tests use temporary databases and synthetic images. A physical smart TV and the venue Wi-Fi still need an on-site demo check.
+Python 3.12, aiohttp, Pillow, SQLite, HTML, CSS and JavaScript. Run the ten automated tests with `.\.venv\Scripts\python.exe -m unittest -v` on Windows or `.venv/bin/python -m unittest -v` on Linux/macOS. All ten passed during the submission review on 14 November 2026. The tests use temporary databases and synthetic images. A physical smart TV and the venue Wi-Fi still need an on-site demo check.
 
 See [ASSUMPTIONS.md](ASSUMPTIONS.md), [ARCHITECTURE.md](ARCHITECTURE.md) and [AI_LOG.md](AI_LOG.md) for the agreed behavior, diagram and actual debugging record. Read the code in this order: static/visit.js (form), app.py (requests), store.py (data), static/display.js (screen).
 
@@ -41,4 +41,4 @@ See [ASSUMPTIONS.md](ASSUMPTIONS.md), [ARCHITECTURE.md](ARCHITECTURE.md) and [AI
 
 The default database is event.sqlite3 in the working folder. Stop the server and delete the event database and any associated SQLite sidecar files after the event. Keep the event folder on a private device and control any backups. The repository excludes event databases, local environment settings and virtual environments. The .env.example lists optional environment variables. Set them in your shell; the app reads the environment directly.
 
-This version runs locally. The review archive includes a Git bundle with the project's commit history. To obtain a Git working copy from the extracted folder, run `git clone visitor-photo-slideshow.bundle ../guestbook-review` and open that clone. Run `git log --oneline` there to inspect the development sequence.
+This version runs locally; no deployed website link is available. A live deployment is optional under the assignment. See [SUBMISSION.md](SUBMISSION.md) to publish the source repository while preserving its real commit history. See [TEST_RESULTS.md](TEST_RESULTS.md) for executed checks and remaining manual checks, and [DEMO_GUIDE.md](DEMO_GUIDE.md) for a short explanation you can practise.
