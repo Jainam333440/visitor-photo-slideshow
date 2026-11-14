@@ -41,6 +41,9 @@ def create_app(path):
 
     async def upload(request):
         token = request.headers.get("X-Visit", "")
+        if request.content_length is not None and request.content_length > MAX_BYTES:
+            raise web.HTTPRequestEntityTooLarge(max_size=MAX_BYTES, actual_size=request.content_length)
+        store.check_visit(token)
         async with slots:
             raw = await request.read()
             if len(raw) > MAX_BYTES:

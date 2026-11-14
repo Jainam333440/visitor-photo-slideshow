@@ -21,6 +21,11 @@ def normalize(raw):
         with Image.open(io.BytesIO(raw), formats=["JPEG", "PNG"]) as im:
             if im.width * im.height > 16_000_000 or getattr(im, "n_frames", 1) != 1:
                 raise ValueError("Use a still image under 16 megapixels.")
+            if im.format == "PNG":
+                if not raw.endswith(bytes.fromhex("0000000049454e44ae426082")):
+                    raise ValueError("The PNG file is incomplete.")
+                with Image.open(io.BytesIO(raw)) as probe:
+                    probe.verify()
             im.load()
             rgba = ImageOps.exif_transpose(im).convert("RGBA")
             rgba.thumbnail((1920, 1920))
@@ -70,6 +75,11 @@ class Store:
             token = secrets.token_urlsafe(24)
             db.execute("INSERT INTO visit(token,owner,consent_at) VALUES(?,?,?)", (digest(token), owner, time.time()))
             return {"token": token, "code": code}
+
+    def check_visit(self, token):
+        with self.transaction() as db:
+            if not db.execute("SELECT 1 FROM visit WHERE token=?", (digest(token),)).fetchone():
+                raise ValueError("Start a visit before uploading.")
 
     def upload(self, token, jpeg):
         with self.transaction() as db:
