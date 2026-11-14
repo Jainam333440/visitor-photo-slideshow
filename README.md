@@ -1,5 +1,9 @@
 # Guestbook · Visitor Photo Slideshow
 
+**Submission repository:** https://github.com/Jainam333440/visitor-photo-slideshow
+
+The application runs locally using the instructions below. See [HISTORY_IMPORT.md](HISTORY_IMPORT.md) for the transparent import record and original Git history.
+
 Visitors enter a name, give permission and upload photos from a browser. A separate screen plays accepted photos for eight seconds each. A private return code lets visitors replay earlier photos across devices or erase their collection. Names and return codes stay off the venue display.
 
 ## Run on Windows
