@@ -92,7 +92,7 @@ class HttpChecks(AioHTTPTestCase):
         responses = [
             await self.client.post("/api/visit", json={}),
             await self.client.get("/api/image/999"),
-            await self.post("photo", data=b"x" * (MAX_BYTES + 1)),
+            await self.post("photo", data=io.BytesIO(b"x" * (MAX_BYTES + 1))),
         ]
         self.assertEqual([r.status for r in responses], [403, 404, 413])
         for response in responses:

@@ -12,10 +12,12 @@ STATIC = Path(__file__).resolve().parent / "static"
 
 @web.middleware
 async def policy(request, handler):
-    if request.method == "POST" and request.headers.get("X-Guestbook") != "1":
-        raise web.HTTPForbidden(text="Use the visitor form.")
     try:
+        if request.method == "POST" and request.headers.get("X-Guestbook") != "1":
+            raise web.HTTPForbidden(text="Use the visitor form.")
         response = await handler(request)
+    except web.HTTPException as exc:
+        response = web.json_response({"error": exc.text}, status=exc.status)
     except ValueError as exc:
         response = web.json_response({"error": str(exc)}, status=400)
     response.headers.update({"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff",
