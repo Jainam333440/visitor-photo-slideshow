@@ -105,7 +105,7 @@ class HttpChecks(AioHTTPTestCase):
         self.assertEqual((await self.client.post("/api/visit", json={})).status, 403)
 
     async def test_reject_oversize_and_unauthorized_decode(self):
-        self.assertEqual((await self.post("photo", data=b"x"*(MAX_BYTES+1))).status, 413)
+        self.assertEqual((await self.post("photo", data=io.BytesIO(b"x"*(MAX_BYTES+1)))).status, 413)
         with patch("app.normalize", side_effect=AssertionError("Decoded before checking visit")):
             self.assertEqual((await self.post("photo", data=sample())).status, 400)
 
