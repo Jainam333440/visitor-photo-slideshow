@@ -88,6 +88,18 @@ class QueueChecks(unittest.TestCase):
 
 
 class HttpChecks(AioHTTPTestCase):
+    async def test_error_responses_are_json_and_not_cached(self):
+        responses = [
+            await self.client.post("/api/visit", json={}),
+            await self.client.get("/api/image/999"),
+            await self.post("photo", data=b"x" * (MAX_BYTES + 1)),
+        ]
+        self.assertEqual([r.status for r in responses], [403, 404, 413])
+        for response in responses:
+            self.assertEqual(response.content_type, "application/json")
+            self.assertEqual(response.headers.get("Cache-Control"), "no-store")
+            self.assertIn("error", await response.json())
+
     async def get_application(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
